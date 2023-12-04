@@ -1,6 +1,6 @@
 <?php 
 session_start(); 
-include "dbConnect.php";
+include(dbConnect.php);
 
 if (isset($_POST['username']) && isset($_POST['password'])) {
 
@@ -21,9 +21,14 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
         header("Location: index.php?error=Password is required");
 	    exit();
 	}else{
-		$sql = "SELECT * FROM users WHERE username='$username' AND password='$password'";
+		$sql = "SELECT * FROM user WHERE username='$username' AND password='$password'";
 
 		$result = mysqli_query($conn, $sql);
+
+		if (!$result) {
+    			echo "Error: " . mysqli_error($conn);
+    			exit();
+		}
 
 		if (mysqli_num_rows($result) === 1) {
 			$row = mysqli_fetch_assoc($result);
